@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from .forms import WarnedUserForm
 from .models import WarnedUser
 
 
+@login_required
 def home(request):
     '''
     If Facebook username or profile ID is POSTed to this view,
