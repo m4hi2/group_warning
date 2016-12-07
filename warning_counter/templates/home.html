@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Facebook Group Warned Users Tracker</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+<body>
+
+<form action='.' method="POST">
+  {{ form }}
+  {% csrf_token %}
+  <input id="button" value="Add Warning" type="submit" />
+</form>
+
+{% if warned_user %}
+{% with warning=warned_user.warning_count %}
+<div id="warning-table">
+  <table>
+    <thead>
+      <tr>
+        <th>Facebook ID</th>
+        <th>Warning{{ warning|pluralize }}</th>
+        {% comment %}
+          As per Python Bangladesh group decision, the user should be removed
+          after third warning and should be blocked after fourth warning.
+        {% endcomment %}
+        {% if warning >= 3 %}
+          <th>Comment</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ warned_user.user_id }}</td>
+        <td>{{ warning }}</td>
+        {% if warning == 3 %}
+          <td>Remove this user</td>
+        {% elif warning >= 4 %}
+          <td>Block this user</td>
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endwith %}
+{% endif %}
+
+</body>
+</html>
