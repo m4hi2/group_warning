@@ -16,11 +16,8 @@ def home(request):
         form = WarnedUserForm(request.POST)
         if form.is_valid():
             user_id = form.cleaned_data['user_id']
-            print(type(user_id))
             try:
                 warned_user = WarnedUser.objects.get(user_id=user_id)
-                print(username)
-                print('asdlfkj')
                 warned_user.warning_count += 1
                 warned_user.save()
             except WarnedUser.DoesNotExist:
