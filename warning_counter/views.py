@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .forms import WarnedUserForm
+
+from .forms import FacebookProfileUrlForm
 from .models import WarnedUser
 
 
@@ -13,7 +14,7 @@ def home(request):
     '''
     warned_user = None
     if request.method == 'POST':
-        form = WarnedUserForm(request.POST)
+        form = FacebookProfileUrlForm(request.POST)
         if form.is_valid():
             user_id = form.cleaned_data['user_id']
             try:
@@ -21,9 +22,10 @@ def home(request):
                 warned_user.warning_count += 1
                 warned_user.save()
             except WarnedUser.DoesNotExist:
-                warned_user = form.save()
+                warned_user = WarnedUser(user_id=user_id)
+                warned_user.save()
     else:
-        form = WarnedUserForm()
+        form = FacebookProfileUrlForm()
 
     context = {
         'form': form,
