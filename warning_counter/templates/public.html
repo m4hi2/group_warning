@@ -1,0 +1,17 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Known Taklas</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    {% for user in warned_user %}
+        <p>
+            <a href="https://facebook.com/{{ user }}"> {{ user }}</a>
+            warned -- {{ user.warning_count }} time{{ user.warning_count|pluralize }}
+        </p>
+
+    {% endfor %}
+</body>
+</html>

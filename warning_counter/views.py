@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views import generic
 
 from .forms import FacebookProfileUrlForm
 from .models import WarnedUser
@@ -32,3 +33,12 @@ def home(request):
         'warned_user': warned_user
     }
     return render(request, 'home.html', context)
+
+
+class PublicView(generic.ListView):
+    template_name = 'public.html'
+    context_object_name = 'warned_user'
+
+    def get_queryset(self):
+        return WarnedUser.objects.all()
+
